@@ -377,7 +377,7 @@ int main(int argc, char **argv){
 	puts("Keypad Arrow keys (with NUM_LOCK on) rotates object.");
 	puts("Rotate crank: 'a' = anti-clock wise 'z' = clock wise");
 	puts("Crank Speed : '+' = Speed up by 1 '-' = Slow Down by 1\n");
-	glutInitWindowSize(400, 400);
+	glutInitWindowSize(1000, 700);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutCreateWindow("Steam Engine");
