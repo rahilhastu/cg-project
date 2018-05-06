@@ -214,6 +214,8 @@ void keyboard(unsigned char key, int x, int y){
 			if ((--crank_step) <= 0)
 			crank_step = 0;
 			break;
+		case 'p':
+			crank_step = 0;
 		default:
 			return;
 		}
@@ -253,28 +255,13 @@ identifier into a keystroke, then call's the keyboard function. */
 void menu(int val){
 	unsigned char key;
 	switch (val) {
-		case 1:
-			key = 's';
-			break;
 		case 2:
 			key = ' ';
 			break;
 		case 3:
-			key = 't';
-			break;
-		case 4:
-			key = 'o';
-			break;
-		case 5:
-			key = '0';
-			break;
-		case 6:
-			key = '1';
-			break;
-		case 7:
 			key = '+';
 			break;
-		case 8:
+		case 4:
 			key = '-';
 			break;
 		default:
@@ -289,8 +276,8 @@ void create_menu(void){
 	glutCreateMenu(menu);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutAddMenuEntry("Animation", 2);
-	glutAddMenuEntry("Speed Up", 7);
-	glutAddMenuEntry("Slow Down", 8);
+	glutAddMenuEntry("Speed Up", 3);
+	glutAddMenuEntry("Slow Down", 4);
 }
 
 /* Makes the head look up table for all possible crank angles. */
