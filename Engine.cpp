@@ -18,8 +18,6 @@ GLint crank_angle = 0;
 GLdouble crank_step = 5;
 /* Storage for the angle look up table and the texture map */
 GLdouble head_look_up_table[361];
-//GLubyte image[IMAGE_WIDTH][IMAGE_HEIGHT][3];
-/* Indentifiers for each Display list */
 //* Variable used in the creaton of glu objects */
 GLUquadricObj *obj;
 /* Draws a box by scaling a glut cube of size 1.*/
@@ -232,10 +230,6 @@ void draw_engine(){
 	glPopMatrix();
 }
 
-/* Main display routine. Clears the drawing buffer and if transparency is set, displays the model twice, 1st time accepting those fragments
-with a ALPHA value of 1 only, then with DEPTH_BUFFER writing disabled for those with other values. */
-
-
 /* Called when the window is idle. When called increments the crank angle by ANGLE_STEP,
 updates the head angle and notifies the system that the screen needs to be updated. */
 
@@ -246,8 +240,7 @@ void animation(void){
 	glutPostRedisplay();
 }
 
-/* Called when a key is pressed. Checks if it reconises the key and if
-so acts on it, updateing the screen. */
+/* Called when a key is pressed. Checks if it recognises the key and if so acts on it, updateing the screen. */
 
 void keyboard(unsigned char key, int x, int y){
 	switch (key) {
@@ -280,7 +273,7 @@ void keyboard(unsigned char key, int x, int y){
 	glutPostRedisplay();
 }
 
-/* ARGSUSED1 */
+/* Arrow Keys */
 
 void special(int key, int x, int y){
 	switch (key) {
@@ -306,9 +299,7 @@ void special(int key, int x, int y){
 	glutPostRedisplay();
 }
 
-/* Called when a menu option has been selected. Translates the menu
-item
-identifier into a keystroke, then call's the keyboard function. */
+/* Called when a menu option has been selected. Translates the menu item identifier into a keystroke, then call's the keyboard function. */
 
 void menu(int val){
 	ob = val;
@@ -373,6 +364,8 @@ void myReshape(int w, int h){
 	glTranslatef(0.0, 0.0, -5.0); /* viewing transform */
 	glScalef(1.5, 1.5, 1.5);
 }
+
+/* Main display routine.*/
 
 void display(void){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
