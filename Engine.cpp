@@ -26,57 +26,48 @@ int ob;
 void *currentfont;
 int f = 0;
 
-void setFont(void *font)
-{
-        currentfont = font;
-}
 
-//BitMap strings
-
-void drawstring(float x, float y, float z, char *string)
+void drawStrokeText(char*string,int x,int y,int z)
 {
-         char *c;
-         glRasterPos3f(x,y,z);
-         for(c = string; *c != '\0'; c++)
-         {
-                //glColor3f(0.0, 0.0, 0.0);
-                glutBitmapCharacter(currentfont, *c);
-         }
+	  char *c;
+	  glPushMatrix();
+	  glTranslatef(x, y+8,z);
+	  glScalef(0.25f,-0.15f,z);
+
+	  for (c=string; *c != '\0'; c++)
+	  {
+    		glutStrokeCharacter(GLUT_STROKE_ROMAN , *c);
+	  }
+	  glPopMatrix();
 }
 
 void first_page()
 {
-        glClear(GL_COLOR_BUFFER_BIT);
-        setFont(GLUT_BITMAP_TIMES_ROMAN_24);
-        glColor3f(1, 0.5, 0);
-        drawstring(-85.0, 90, 1.0,"******* * * * * * * * * * TITLE * * * * * * * * * *********");
-        setFont(GLUT_BITMAP_TIMES_ROMAN_24);
-        glColor3f(0.0, 0.0, 1.0);
-        drawstring(-55.0, 75, 1.0,"PESIT BANGLORE SOUTH CAMPUS");
-        glColor3f(0.0, 1.0, 1.0);
-        drawstring(-100, 60, 1.0,"DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING");
-        glColor3f(0.863, 0.078, 0.235);
-        drawstring(-90.0, 36, 1.0,"A MINI PROJECT ON   \"SODIUM/POTASSIUM\"    PUMP");
-        glColor3f(1, 0.84, 0.0);
-        setFont(GLUT_BITMAP_9_BY_15);
-        drawstring(-120.0, 10, 1.0,"BY:...");
-        setFont(GLUT_BITMAP_TIMES_ROMAN_24);
-        glColor3f(0.502, 0.000, 0.502);
-        drawstring(-120.0, 0.0, 1.0,"1. Madiri Srikanth                                                                  1PE14CS079");
-        glColor3f(0.502, 0.000, 0.502);
-        drawstring(-120.0, -10.0, 1.0,"2. Rahil Hastu                                                                1PE15CS114");
-        setFont(GLUT_BITMAP_9_BY_15);
-        glColor3f(0.95, 0.15, 0.0);
-        drawstring(-120.0, -40.0, 1.0,"UNDER THE GUIDANCE OF:...");
-        setFont(GLUT_BITMAP_TIMES_ROMAN_24);
-        glColor3f(0.502, 0.502, 0.000);
-        drawstring(-120.0, -50.0, 1.0,"1. Ms. Evilin");
-        glColor3f(0.502, 0.502, 0.000);
-        drawstring(-120.0, -60.0, 1.0,"2. Ms. Nagalaxmi");
-        glColor3f(0.196, 0.804, 0.196);
-        drawstring(-30.0, -80.0, 1.0,"RIGHT CLICK TO SELECT");
-        glutSwapBuffers();
-        glutPostRedisplay();
+	glClear(GL_COLOR_BUFFER_BIT);
+	glLoadIdentity();
+
+	glColor3f(0.82,0.18,0.02);
+	drawStrokeText("PESIT BANGLORE SOUTH CAMPUS",400,40,1);
+	glColor3f(0.67,0.28,0.62);
+	drawStrokeText("DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING",220,110,0);
+	glColor3f(0.76,0.98,0.32);
+	drawStrokeText("A MINI PROJECT ON SIMULATION OF ENGINE",120,180,0);
+	glColor3f(1.0,0.98,1.00);
+	drawStrokeText("BY :",75,250,0);
+	glColor3f(0.99,0.08,0.42);
+	drawStrokeText("1. Madhiri Srikanth       1PE15CS079",200,320,0);
+	glColor3f(0.20,0.48,0.92);
+	drawStrokeText("2. Rahil Hastu        1PE15CS114",200,390,0);
+	glColor3f(0.99,0.68,0.62);
+	drawStrokeText("UNDER THE GUIDANCE OF : ",75,460,0);
+	glColor3f(0.1,0.99,0.92);
+	drawStrokeText("1. Ms. Evilin",200,530,0);
+	glColor3f(0.99,0.59,0.02);
+	drawStrokeText("2. Ms. Nagalaxmi",200,600,0);
+	glColor3f(0.59,0.09,0.85);
+	drawStrokeText("Right Click to Select Menu",500,670,0);
+
+	glutSwapBuffers();
 }
 
 void myBox(GLdouble x, GLdouble y, GLdouble z){
@@ -174,8 +165,7 @@ void draw_crankbell(void){
 	glPopMatrix();
 }
 
-/* Draws the complete crank. Piston also gets drawn through the crank
-bell function. */
+/* Draws the complete crank. Piston also gets drawn through the crank bell function. */
 
 void draw_crank(void){
 	glPushMatrix();
@@ -306,7 +296,7 @@ void menu(int val){
 	glutPostRedisplay();
 }
 
-/* Initialises the menu of toggles. */
+/* Initialises the menu. */
 
 void create_menu(void){
 	glutCreateMenu(menu);
