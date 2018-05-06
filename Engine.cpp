@@ -23,6 +23,64 @@ GLdouble head_look_up_table[361];
 //* Variable used in the creaton of glu objects */
 GLUquadricObj *obj;
 /* Draws a box by scaling a glut cube of size 1.*/
+
+int ob;
+void *currentfont;
+int f = 0;
+
+void setFont(void *font)
+{
+        currentfont = font;
+}
+
+//BitMap strings
+
+void drawstring(float x, float y, float z, char *string)
+{
+         char *c;
+         glRasterPos3f(x,y,z);
+         for(c = string; *c != '\0'; c++)
+         {
+                //glColor3f(0.0, 0.0, 0.0);
+                glutBitmapCharacter(currentfont, *c);
+         }
+}
+
+void first_page()
+{
+        glClear(GL_COLOR_BUFFER_BIT);
+        setFont(GLUT_BITMAP_TIMES_ROMAN_24);
+        glColor3f(1, 0.5, 0);
+        drawstring(-85.0, 90, 1.0,"******* * * * * * * * * * TITLE * * * * * * * * * *********");
+        setFont(GLUT_BITMAP_TIMES_ROMAN_24);
+        glColor3f(0.0, 0.0, 1.0);
+        drawstring(-55.0, 75, 1.0,"PESIT BANGLORE SOUTH CAMPUS");
+        glColor3f(0.0, 1.0, 1.0);
+        drawstring(-100, 60, 1.0,"DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING");
+        glColor3f(0.863, 0.078, 0.235);
+        drawstring(-90.0, 36, 1.0,"A MINI PROJECT ON   \"SODIUM/POTASSIUM\"    PUMP");
+        glColor3f(1, 0.84, 0.0);
+        setFont(GLUT_BITMAP_9_BY_15);
+        drawstring(-120.0, 10, 1.0,"BY:...");
+        setFont(GLUT_BITMAP_TIMES_ROMAN_24);
+        glColor3f(0.502, 0.000, 0.502);
+        drawstring(-120.0, 0.0, 1.0,"1. Madiri Srikanth                                                                  1PE14CS079");
+        glColor3f(0.502, 0.000, 0.502);
+        drawstring(-120.0, -10.0, 1.0,"2. Rahil Hastu                                                                1PE15CS114");
+        setFont(GLUT_BITMAP_9_BY_15);
+        glColor3f(0.95, 0.15, 0.0);
+        drawstring(-120.0, -40.0, 1.0,"UNDER THE GUIDANCE OF:...");
+        setFont(GLUT_BITMAP_TIMES_ROMAN_24);
+        glColor3f(0.502, 0.502, 0.000);
+        drawstring(-120.0, -50.0, 1.0,"1. Ms. Evilin");
+        glColor3f(0.502, 0.502, 0.000);
+        drawstring(-120.0, -60.0, 1.0,"2. Ms. Nagalaxmi");
+        glColor3f(0.196, 0.804, 0.196);
+        drawstring(-30.0, -80.0, 1.0,"RIGHT CLICK TO SELECT");
+        glutSwapBuffers();
+        glutPostRedisplay();
+}
+
 void myBox(GLdouble x, GLdouble y, GLdouble z){
 	glPushMatrix();
 	glScalef(x, y, z);
@@ -140,12 +198,8 @@ void draw_crank(void){
 	glPopMatrix();
 }
 
-/* Main display routine. Clears the drawing buffer and if transparency is set, displays the model twice, 1st time accepting those fragments
-with a ALPHA value of 1 only, then with DEPTH_BUFFER writing disabled for those with other values. */
-
-void display(void){
+void draw_engine(){
 	int pass;
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glPushMatrix();
 	glDisable(GL_ALPHA_TEST);
 	pass = 0;
@@ -157,7 +211,7 @@ void display(void){
 		glAlphaFunc(GL_EQUAL, 1);
 		glDepthMask(GL_TRUE);
 		pass--;
-		} 
+		}
 		else if (pass != 0) {
 		glAlphaFunc(GL_NOTEQUAL, 1);
 		glDepthMask(GL_FALSE);
@@ -177,6 +231,10 @@ void display(void){
 	glutSwapBuffers();
 	glPopMatrix();
 }
+
+/* Main display routine. Clears the drawing buffer and if transparency is set, displays the model twice, 1st time accepting those fragments
+with a ALPHA value of 1 only, then with DEPTH_BUFFER writing disabled for those with other values. */
+
 
 /* Called when the window is idle. When called increments the crank angle by ANGLE_STEP,
 updates the head angle and notifies the system that the screen needs to be updated. */
@@ -253,21 +311,8 @@ item
 identifier into a keystroke, then call's the keyboard function. */
 
 void menu(int val){
-	unsigned char key;
-	switch (val) {
-		case 2:
-			key = ' ';
-			break;
-		case 3:
-			key = '+';
-			break;
-		case 4:
-			key = '-';
-			break;
-		default:
-			return;
-	}
-	keyboard(key, 0, 0);
+	ob = val;
+	glutPostRedisplay();
 }
 
 /* Initialises the menu of toggles. */
@@ -275,9 +320,9 @@ void menu(int val){
 void create_menu(void){
 	glutCreateMenu(menu);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
-	glutAddMenuEntry("Animation", 2);
-	glutAddMenuEntry("Speed Up", 3);
-	glutAddMenuEntry("Slow Down", 4);
+	glutAddMenuEntry("Title", 1);
+	glutAddMenuEntry("Engine", 2);
+	glutAddMenuEntry("Exit !!", 3);
 }
 
 /* Makes the head look up table for all possible crank angles. */
@@ -329,25 +374,32 @@ void myReshape(int w, int h){
 	glScalef(1.5, 1.5, 1.5);
 }
 
+void display(void){
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	switch(ob){
+		case 1: first_page();
+				break;
+		case 2: draw_engine();
+				glutSpecialFunc(special);
+				break;
+		case 3: exit(0);
+				break;
+	}
+}
+
 /* Main program.*/
 
 int main(int argc, char **argv){
 	puts("Steam Engine\n");
 	puts("Keypad Arrow keys (with NUM_LOCK on) rotates object.");
 	puts("Rotate crank: 'a' = anti-clock wise 'z' = clock wise");
-	puts("Crank Speed : '+' = Speed up by 1 '-' = Slow Down by 1");
-	puts("Toggle : 's' = Shading 't' = Texture");
-	puts(" : ' ' = Animation 'o' = Transparency");
-	puts(" : '0' = Right Light '1' = Left Light");
-	puts(" Alternatively a pop up menu with all toggles is attached");
-	puts(" to the left mouse button.\n");
+	puts("Crank Speed : '+' = Speed up by 1 '-' = Slow Down by 1\n");
 	glutInitWindowSize(400, 400);
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutCreateWindow("Steam Engine");
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
-	glutSpecialFunc(special);
 	create_menu();
 	myinit();
 	glutReshapeFunc(myReshape);
