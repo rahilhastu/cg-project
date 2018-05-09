@@ -23,6 +23,7 @@ GLUquadricObj *obj;
 /* Draws a box by scaling a glut cube of size 1.*/
 
 int ob;
+/*
 void *currentfont;
 int f = 0;
 
@@ -69,7 +70,7 @@ void first_page()
 
 	glutSwapBuffers();
 }
-
+*/
 void myBox(GLdouble x, GLdouble y, GLdouble z){
 	glPushMatrix();
 	glScalef(x, y, z);
@@ -301,7 +302,7 @@ void menu(int val){
 void create_menu(void){
 	glutCreateMenu(menu);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
-	glutAddMenuEntry("Title", 1);
+	// glutAddMenuEntry("Title", 1);
 	glutAddMenuEntry("Engine", 2);
 	glutAddMenuEntry("Exit !!", 3);
 }
@@ -359,15 +360,8 @@ void myReshape(int w, int h){
 
 void display(void){
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	switch(ob){
-		case 1: first_page();
-				break;
-		case 2: draw_engine();
-				glutSpecialFunc(special);
-				break;
-		case 3: exit(0);
-				break;
-	}
+	draw_engine();
+	glutSpecialFunc(special);
 }
 
 /* Main program.*/
