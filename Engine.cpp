@@ -100,32 +100,32 @@ void draw_piston(void){
 	glPushMatrix();
 	glRotatef(90, 0.0, 1.0, 0.0);
 	glTranslatef(0.0, 0.0, -0.07);
-	myCylinder(obj, 0.125, 0.06, 0.12);
+	myCylinder(obj, 0.125, 0.06, 0.12); //pink part cylinder
 	glPopMatrix();
 	glRotatef(-90, 1.0, 0.0, 0.0);
 	glTranslatef(0.0, 0.0, 0.05); //inside cylinder and shaft rod
-	myCylinder(obj, 0.06, 0.0, 0.6);
-	glTranslatef(0.0, 0.0, 0.6); //inside cylinder
-	myCylinder(obj, 0.2, 0.0, 0.5);
+	myCylinder(obj, 0.06, 0.0, 0.6); //rod 
+	glTranslatef(0.0, 0.0, 0.6); //push piston inside cylinder
+	myCylinder(obj, 0.2, 0.0, 0.5); //piston
 	glPopMatrix();
 }
 
 /* Draws the engine pole and the pivot pole for the cylinder head. */
 
-void draw_engine_pole(void){
+void draw_engine_pole(void){ //middle box and horizontal cylinder 
 	glPushMatrix();
 	glColor4f(0.9, 0.9, 0.9, 1.0);
 	myBox(0.5, 3.0, 0.5);
 	glColor3f(0.5, 0.1, 0.5);
 	glRotatef(90, 0.0, 1.0, 0.0);
 	glTranslatef(0.0, 0.9, -0.4);
-	myCylinder(obj, 0.1, 0.0, 2);
+	myCylinder(obj, 0.1, 0.0, 2); //horizontal cylinder
 	glPopMatrix();
 }
 
 /* Draws the cylinder head at the appropreate angle, doing the necesary translations for the rotation. */
 
-void draw_cylinder_head(void){
+void draw_cylinder_head(void){ //Piston covering cylinder
 	glPushMatrix();
 	glColor4f(0.5, 1.0, 0.5, 0.1);
 	glRotatef(90, 1.0, 0.0, 0.0);
@@ -140,7 +140,7 @@ void draw_cylinder_head(void){
 
 /* Draws the flywheel. */
 
-void draw_flywheel(void){
+void draw_flywheel(void){ //blue cylinder
 	glPushMatrix();
 	glColor4f(0.5, 0.5, 1.0, 1.0);
 	glRotatef(90, 0.0, 1.0, 0.0);
@@ -151,14 +151,14 @@ void draw_flywheel(void){
 /* Draws the crank bell, and the pivot pin for the piston. Also calls the appropreate display
 list of a piston doing the nesacary rotations before hand. */
 
-void draw_crankbell(void){
+void draw_crankbell(void){ //brown cylinder connected with piston
 	glPushMatrix();
 	glColor4f(1.0, 0.5, 0.5, 1.0);
 	glRotatef(90, 0.0, 1.0, 0.0);
-	myCylinder(obj, 0.3, 0.08, 0.12);
+	myCylinder(obj, 0.3, 0.08, 0.12); //brown cylinder
 	glColor4f(0.5, 0.1, 0.5, 1.0);
 	glTranslatef(0.0, 0.2, 0.0);
-	myCylinder(obj, 0.06, 0.0, 0.34);
+	myCylinder(obj, 0.06, 0.0, 0.34); //filling crankbell
 	glTranslatef(0.0, 0.0, 0.22);
 	glRotatef(90, 0.0, 1.0, 0.0);
 	glRotatef(crank_angle - head_angle, 1.0, 0.0, 0.0);
@@ -178,11 +178,11 @@ void draw_crank(void){
 	glPopMatrix();
 	glPushMatrix();
 	glTranslatef(0.28, 0.0, 0.0);
-	draw_crankbell();
+	draw_crankbell(); //piston se connected cylinder brown thing
 	glPopMatrix();
 	glPushMatrix();
 	glTranslatef(-0.77, 0.0, 0.0);
-	draw_flywheel();
+	draw_flywheel(); //blue cylinder
 	glPopMatrix();
 	glPopMatrix();
 }
@@ -206,10 +206,10 @@ void draw_engine(){
 		glDepthMask(GL_FALSE);
 		pass--;
 		}
-		draw_engine_pole();
+		draw_engine_pole(); //middle cylinder
 		glPushMatrix();
 		glTranslatef(0.5, 1.4, 0.0);
-		draw_cylinder_head();
+		draw_cylinder_head(); //piston covering cylinder
 		glPopMatrix();
 		glPushMatrix();
 		glTranslatef(0.0, -0.8, 0.0);
