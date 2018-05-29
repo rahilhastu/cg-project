@@ -23,54 +23,7 @@ GLUquadricObj *obj;
 /* Draws a box by scaling a glut cube of size 1.*/
 
 int ob;
-/*
-void *currentfont;
-int f = 0;
 
-
-void drawStrokeText(char*string,int x,int y,int z)
-{
-	  char *c;
-	  glPushMatrix();
-	  glTranslatef(x, y+8,z);
-	  glScalef(0.25f,-0.15f,z);
-
-	  for (c=string; *c != '\0'; c++)
-	  {
-    		glutStrokeCharacter(GLUT_STROKE_ROMAN , *c);
-	  }
-	  glPopMatrix();
-}
-
-void first_page()
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-	glLoadIdentity();
-
-	glColor3f(0.82,0.18,0.02);
-	drawStrokeText("PESIT BANGLORE SOUTH CAMPUS",400,40,1);
-	glColor3f(0.67,0.28,0.62);
-	drawStrokeText("DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING",220,110,0);
-	glColor3f(0.76,0.98,0.32);
-	drawStrokeText("A MINI PROJECT ON SIMULATION OF ENGINE",120,180,0);
-	glColor3f(1.0,0.98,1.00);
-	drawStrokeText("BY :",75,250,0);
-	glColor3f(0.99,0.08,0.42);
-	drawStrokeText("1. Madhiri Srikanth       1PE15CS079",200,320,0);
-	glColor3f(0.20,0.48,0.92);
-	drawStrokeText("2. Rahil Hastu        1PE15CS114",200,390,0);
-	glColor3f(0.99,0.68,0.62);
-	drawStrokeText("UNDER THE GUIDANCE OF : ",75,460,0);
-	glColor3f(0.1,0.99,0.92);
-	drawStrokeText("1. Ms. Evilin",200,530,0);
-	glColor3f(0.99,0.59,0.02);
-	drawStrokeText("2. Ms. Nagalaxmi",200,600,0);
-	glColor3f(0.59,0.09,0.85);
-	drawStrokeText("Right Click to Select Menu",500,670,0);
-
-	glutSwapBuffers();
-}
-*/
 void myBox(GLdouble x, GLdouble y, GLdouble z){
 	glPushMatrix();
 	glScalef(x, y, z);
@@ -158,7 +111,7 @@ void draw_crankbell(void){ //brown cylinder connected with piston
 	myCylinder(obj, 0.3, 0.08, 0.12); //brown cylinder
 	glColor4f(0.5, 0.1, 0.5, 1.0);
 	glTranslatef(0.0, 0.2, 0.0);
-	myCylinder(obj, 0.06, 0.0, 0.34); //filling crankbell
+	myCylinder(obj, 0.06, 0.0, 0.34); //filling crankbell {purple}
 	glTranslatef(0.0, 0.0, 0.22);
 	glRotatef(90, 0.0, 1.0, 0.0);
 	glRotatef(crank_angle - head_angle, 1.0, 0.0, 0.0);
@@ -174,7 +127,7 @@ void draw_crank(void){
 	glPushMatrix();
 	glRotatef(90, 0.0, 1.0, 0.0);
 	glTranslatef(0.0, 0.0, -1.0);
-	myCylinder(obj, 0.08, 0.0, 1.4);
+	myCylinder(obj, 0.08, 0.0, 1.4); //filling in crank
 	glPopMatrix();
 	glPushMatrix();
 	glTranslatef(0.28, 0.0, 0.0);
@@ -195,17 +148,6 @@ void draw_engine(){
 	/* Rotate the whole model */
 	glRotatef(view_h, 0, 1, 0);
 	glRotatef(view_v, 1, 0, 0);
-	do {
-		if (pass == 2) {
-		glAlphaFunc(GL_EQUAL, 1);
-		glDepthMask(GL_TRUE);
-		pass--;
-		}
-		else if (pass != 0) {
-		glAlphaFunc(GL_NOTEQUAL, 1);
-		glDepthMask(GL_FALSE);
-		pass--;
-		}
 		draw_engine_pole(); //middle cylinder
 		glPushMatrix();
 		glTranslatef(0.5, 1.4, 0.0);
@@ -215,8 +157,6 @@ void draw_engine(){
 		glTranslatef(0.0, -0.8, 0.0);
 		draw_crank();
 		glPopMatrix();
-		} while (pass > 0);
-	glDepthMask(GL_TRUE);
 	glutSwapBuffers();
 	glPopMatrix();
 }
@@ -290,26 +230,9 @@ void special(int key, int x, int y){
 	glutPostRedisplay();
 }
 
-/* Called when a menu option has been selected. Translates the menu item identifier into a keystroke, then call's the keyboard function. */
-
-void menu(int val){
-	ob = val;
-	glutPostRedisplay();
-}
-
-/* Initialises the menu. */
-
-void create_menu(void){
-	glutCreateMenu(menu);
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
-	// glutAddMenuEntry("Title", 1);
-	glutAddMenuEntry("Engine", 2);
-	glutAddMenuEntry("Exit !!", 3);
-}
-
 /* Makes the head look up table for all possible crank angles. */
 
-void make_table(void){
+void make_table(void){ //rotating the cylinder containing the piston
 	GLint i;
 	GLdouble k;
 	for (i = 0, k = 0.0; i < 360; i++, k++) {
@@ -335,7 +258,6 @@ void myinit(void){
 	/* Initial render mode is with full shading and LIGHT 0	enabled. */
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
-	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_ALPHA_TEST);
 	glColorMaterial(GL_FRONT_AND_BACK, GL_DIFFUSE);
@@ -377,7 +299,6 @@ int main(int argc, char **argv){
 	glutCreateWindow("Steam Engine");
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
-	create_menu();
 	myinit();
 	glutReshapeFunc(myReshape);
 	glutMainLoop();
